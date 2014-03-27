@@ -1,0 +1,16 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+api_key:
+  plugin: mine
+  name: api_key
+  value: abc
+
+zoom:
+  plugin: mine
+  name: zoom
+  value: 123
+
+other:
+  plugin: other
+  name: other
+  value: mother

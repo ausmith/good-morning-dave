@@ -1,0 +1,46 @@
+<% content_for :head do -%>
+  <% unless Rails.env.test? # Only render if not in test -%>
+    <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?v=3.exp&key=#{safe_pref_fetch("google", "api_key")}&sensor=false" %>
+    <script type="text/javascript">
+      var myLatlng;
+      var map;
+
+      function getGeoLoc(address) {
+        var geo = new google.maps.Geocoder;
+        geo.geocode( {'address': address}, function(results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                myLatlng = results[0].geometry.location;
+                map.setCenter(myLatlng);
+              } else {
+                alert("Geocoder error: " + status);
+              }
+            });
+      }
+
+      function initialize() {
+        myLatlng = new google.maps.LatLng(30, -80);
+        var mapOptions = {
+          zoom: <%= pref_has_keys?("google", ["zoom"]) ?
+                      safe_pref_fetch("google", "zoom") : 12 %>,
+          center: myLatlng
+        };
+
+        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+        var trafficLayer = new google.maps.TrafficLayer();
+        trafficLayer.setMap(map);
+
+        getGeoLoc('<%= safe_pref_fetch("google", "address") %>');
+      }
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  <% end -%>
+<% end -%>
+
+<% if pref_has_keys?("google", ["api_key", "address"]) -%>
+  <div id="map-canvas" style="width: 800px; height: 600px; margin: auto;"></div>
+<% else -%>
+  <h3>You need to set the &quot;api_key&quot; and &quot;address&quot; keys</h3>
+<% end -%>
+
