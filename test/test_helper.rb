@@ -10,6 +10,15 @@ class ActiveSupport::TestCase
   # Note: You'll currently still have to declare fixtures explicitly in integration tests
   # -- they do not yet inherit this setting
   fixtures :all
+end
 
-  # Add more helper methods to be used by all tests here...
+VCR::configure do |c|
+  c.cassette_library_dir = Rails.root.join('test', 'support', 'vcr').to_s
+  c.hook_into :webmock
+  c.default_cassette_options = {
+    # change when adding new tests
+    :record => :none,
+    :update_content_length_header => true,
+    :match_requests_on => [:method, :uri, :body],
+  }
 end
