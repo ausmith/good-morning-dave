@@ -1,0 +1,30 @@
+<% if pref_has_keys?("wunderground", ["api_key", "zip"]) and (not Rails.env.test?) -%>
+  <table>
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Forecast</th>
+        <th>Image</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% current, forecast = get_weather -%>
+      <tr>
+        <td>Now</td>
+        <td><%= current[0] %></td>
+        <td><img src="<%= current[2] %>" /></td>
+      </tr>
+      <% forecast.each do |fc| -%>
+        <tr>
+          <td><%= fc[0] %></td>
+          <td><%= fc[1] %></td>
+          <td><img src="<%= fc[2] %>" /></td>
+        </tr>
+      <% end -%>
+    </tbody>
+  </table>
+  <%  %>
+<% else -%>
+  <h3>You need to set the &quot;api_key&quot; and &quot;zip&quot; keys</h3>
+<% end -%>
+
