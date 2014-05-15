@@ -3,6 +3,9 @@ good-morning-dave
 
 One stop shop for what you need to know for your work-day.
 
+I have stopped development on this project now that I have Google Now
+on my phone.
+
 # Goals
 
 Provide an interface for getting morning alerts about:
